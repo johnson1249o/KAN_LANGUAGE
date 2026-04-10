@@ -39,9 +39,20 @@ def analyze(source):
 
     i = 0
     n = len(tokens_list)
+    in_block = 0
 
     while i < n:
         tok = tokens_list[i]
+
+        if tok.type == 'LSQRBRACKET' and i + 1 < n and tokens_list[i + 1].type == 'LSQRBRACKET':
+            in_block += 1
+
+        if tok.type == 'RSQRBRACKET' and i + 1 < n and tokens_list[i + 1].type == 'RSQRBRACKET':
+            in_block = max(0, in_block - 1)
+
+        if in_block > 0:
+            i += 1 
+            continue 
 
         if tok.type == 'IDENTIFIER' and i + 1 < n and tokens_list[i + 1].type == 'EQUALS':
             define(tok.value)
@@ -113,7 +124,7 @@ def analyze(source):
                         f"Undefined variable '{tok.value}'",
                         tok.lineno
                     ))
-
+                    
         # scope push
         if tok.type == 'LSQRBRACKET' and i + 1 < n and tokens_list[i + 1].type == 'LSQRBRACKET':
             scope_stack.append(set())
