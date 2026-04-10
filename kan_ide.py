@@ -52,23 +52,18 @@ class KanGUI:
             captured = io.StringIO()
             sys.stdout = captured
 
-            answers = []
             for stmt in ast:
-                resu = stmt()
-                if resu is not None and resu != "":
-                    answers.append(str(resu))
+                stmt()
 
             sys.stdout = sys.__stdout__
 
             printed_output = captured.getvalue()
-            joined = "\n".join(answers)
-            final = (printed_output + joined).strip()
 
             this.output.delete("1.0", tk.END)
-            this.output.insert(tk.END, final)
+            this.output.insert(tk.END, printed_output.strip())
 
         except Exception as e:
-            sys.stdout = sys.__stdout__ 
+            sys.stdout = sys.__stdout__
             messagebox.showerror("Error is at Runtime", str(e))
 
 
