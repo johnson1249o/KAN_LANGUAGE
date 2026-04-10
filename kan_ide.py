@@ -34,6 +34,7 @@ class KanGUI:
 
         tk.Button(frame2, text="▶ Run", command=this.Process).grid(row=0, column=0, padx=5)
         tk.Button(frame2, text="🔍 Tokens", command=this.Token).grid(row=0, column=1, padx=5)
+        tk.Button(frame2, text="🌳 Parse Tree", command=this.pr_tree).grid(row=0, column=2, padx=5)
         tk.Button(frame2, text="🤖 Ask AI", command=this.compare_ai).grid(row=0, column=3, padx=5)
     
 
@@ -76,8 +77,19 @@ class KanGUI:
         this.output.delete("1.0", tk.END)
         this.output.insert(tk.END, "\n".join(tokens_output))
 
-   
-    
+    def pr_tree(this):
+        from kan_yacc import parse_log
+        c_ode = this.sec.get("1.0", tk.END)
+
+        try:
+            parse_log.clear()
+            parser.parse(c_ode)
+
+            this.output.delete("1.0", tk.END)
+            this.output.insert(tk.END, "\n".join(parse_log))
+
+        except Exception as e:
+            messagebox.showerror("Parse Tree Error", str(e))
 
     def compare_ai(this):
         code = this.sec.get("1.0", tk.END)

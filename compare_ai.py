@@ -7,10 +7,8 @@ class AICompare:
     @staticmethod
     def analyze(code):
         try:
-            # Initialize the Gemini Flash model
             model = genai.GenerativeModel('gemini-2.0-flash-lite')
             
-            # Construct the prompt with instructions for the KAN language
             prompt = (
                 "You are an expert compiler assistant for the KAN programming language. "
                 "Analyze the following code and predict its execution output. "
