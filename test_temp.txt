@@ -1,0 +1,8 @@
+A = 20
+B = 40
+C = A + B * B
+
+[[D = C/0]
+println["Error: Division by zero attempted but not allowed."]]
+
+println["The result is", C]
