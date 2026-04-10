@@ -98,7 +98,7 @@ def p_program_no_newline(p):
     p[0] = [p[1]]
 
 
-def p_statement_try(p):
+def p_statement_try_function(p):
     'statement : LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET'
     tryblock, handler = p[3], p[6]
     def try_block():

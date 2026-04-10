@@ -1,5 +1,5 @@
 
-from ai_compare import AICompare
+from compare_ai import AICompare
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 from graphviz import Digraph
@@ -7,7 +7,7 @@ import tempfile
 import os
 
 from kan_lex import lexer
-#from kan_yacc import parser
+from kan_yacc import parser
 
 
 class KanGUI:
@@ -22,6 +22,18 @@ class KanGUI:
     # =========================
     # UI LAYOUT
     # =========================
+    def compare_ai(this):
+        c_ode = this.sec.get("1.0", tk.END)
+        
+        compiler_output = this.output.get("1.0", tk.END).strip()
+        
+        ai_output = AICompare.analyze(c_ode)
+        
+        result = AICompare.compare(compiler_output, ai_output)
+        
+        this.output.delete("1.0", tk.END)
+        this.output.insert(tk.END, f"🤖 AI Prediction:\n{ai_output}\n\n{result}")
+
     def display(this):
         # Top Frame (Editor)
         frame1 = tk.Frame(this.root)
@@ -103,7 +115,7 @@ class KanGUI:
 
 
     def build_graph(this, dot, node, parent=None):
-        current_id = str(this.node_id)
+        current_id = str(this.iden)
         this.iden += 1
 
         label = type(node).__name__
@@ -123,7 +135,7 @@ class KanGUI:
                     this.build_graph(dot, value, current_id)
 
                 else:
-                    leaf_id = str(self.node_id)
+                    leaf_id = str(this.iden)
                     this.iden += 1
                     dot.node(leaf_id, f"{key}: {value}")
                     dot.edge(current_id, leaf_id)
