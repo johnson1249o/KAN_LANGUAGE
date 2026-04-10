@@ -16,7 +16,7 @@ def get_var(name):
     for scope in reversed(variables):
         if name in scope:
             return scope[name]
-    return name
+    raise NameError(f"Undefined variable: '{name}'")
 
 #sets variable in innermost scope
 def set_var(name, value):
@@ -185,52 +185,13 @@ def p_try_function_define(p):
         set_var(name, try_block)
     p[0] = define
 
-def p_paramlist_multi(p):
-    'paramlist : paramlist COMMA IDENTIFIER'
-    p[0] = p[1] + [p[3]]
-
-def p_paramlist_single(p):
-    'paramlist : IDENTIFIER'
-    p[0] = [p[1]]
-
-def p_function_define_input(p):
-    'expression : IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET'
-    name, params, body = p[1], p[3], p[5]
-    def define():
-        def function(*args):
-            push_scope()
-            for param, arg in zip(params, args):
-                set_var(param, arg)
-            for stmt in body:
-                result = stmt()
-            pop_scope()
-            return result
-        set_var(name, function)
-    p[0] = define
-
-def p_try_function_define_input(p):
-    'expression : IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET'
-    name, params, tryblock, handler = p[1], p[3], p[5], p[7]
-    def define():
-        def try_block(*args):
-            push_scope()
-            for param, arg in zip(params, args):
-                set_var(param, arg)
-            try:
-                for stmt in tryblock:
-                    result = stmt()
-                pop_scope()
-                return result
-            except Exception:
-                pop_scope()
-                push_scope()
-                for stmt in handler:
-                    result = stmt()
-                pop_scope()
-                return result
-        set_var(name, try_block)
-    p[0] = define
-
+def p_function_call(p):
+    'expression : IDENTIFIER LSQRBRACKET RSQRBRACKET'
+    name = p[1]
+    def call():
+        func = get_var(name)
+        return func()
+    p[0] = call
 
 #ply builds bottom up so even though this also uses square brackets like try block, it will be consumed into the print statement before anything goes wrong
 def p_statement_println(p):

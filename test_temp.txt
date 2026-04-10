@@ -11,8 +11,10 @@ println["Local scope:", SCOPE]]]
 
 println["Global scope:", SCOPE]
 
-add_func[var1, var2[
-sum = var1 + var2
-println["Sum =", sum] ]]
+no_input[[println["yo."]]]
+
+no_input[]
+no_input[]
+no_input[]
 
 println["The result is", C]
