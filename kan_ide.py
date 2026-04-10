@@ -21,9 +21,6 @@ class KanGUI:
 
         this.display()
 
-    # =========================
-    # UI LAYOUT
-    # =========================
     def display(this):
         # Top Frame (Editor)
         frame1 = tk.Frame(this.root)
@@ -41,7 +38,6 @@ class KanGUI:
         tk.Button(frame2, text="Ask AI", command=this.compare_ai).grid(row=0, column=3, padx=5)
     
 
-        # Output Console
         this.output = tk.Text(this.root, height=10, bg="black", fg="lime", font=("Consolas", 10))
         this.output.pack(fill="both", expand=False, padx=10, pady=10)
 
