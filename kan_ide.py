@@ -21,9 +21,8 @@ class KanGUI:
 
         this.display()
 
-    # =========================
-    # UI LAYOUT
-    # =========================
+    #ui functions
+
     def display(this):
         # Top Frame (Editor)
         frame1 = tk.Frame(this.root)
@@ -103,13 +102,13 @@ class KanGUI:
 
             compiler_output = "\n".join(results)
 
-            # Ask AI
+            #ask AI
             ai_output = AICompare.analyze(code)
 
-            # Compare
+            #compare
             comparison = AICompare.compare(compiler_output, ai_output)
 
-            # Show results
+            #show results
             this.output.delete("1.0", tk.END)
             this.output.insert(
                 tk.END,
