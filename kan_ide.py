@@ -8,6 +8,9 @@ from tkinter import ttk, filedialog, messagebox
 from kan_lex import lexer
 from kan_yacc import parser
 
+import io
+import sys
+
 
 class KanGUI:
     def __init__(this, root):
@@ -45,21 +48,25 @@ class KanGUI:
     
     def Process(this):
         c_ode = this.sec.get("1.0", tk.END)
-
         try:
             ast = parser.parse(c_ode)
 
-            answers = []
+            captured = io.StringIO()
+            sys.stdout = captured
+
             for stmt in ast:
-                resu = stmt()
-                if resu is not None:
-                    answers.append(str(resu))
+                stmt()
+
+            sys.stdout = sys.__stdout__
+
+            printed_output = captured.getvalue()
 
             this.output.delete("1.0", tk.END)
-            this.output.insert(tk.END, "\n".join(answers))
+            this.output.insert(tk.END, printed_output.strip())
 
         except Exception as e:
-            messagebox.showerror("Error is at Runtime ", str(e))
+            sys.stdout = sys.__stdout__
+        messagebox.showerror("Error is at Runtime", str(e))
 
    
     def Token(this):
