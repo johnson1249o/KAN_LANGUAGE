@@ -1,6 +1,7 @@
 A = 20
 B = 40
 C = A + B * B
+C = A + B/(A * B + B) + B-B +(-B/A)
 
 [[D = C/0]println["Error: Division by zero attempted but not allowed."] ]
 
@@ -11,10 +12,10 @@ println["Local scope:", SCOPE]]]
 
 println["Global scope:", SCOPE]
 
-no_input[[println["yo."]]]
+FUNC[[println["yo."]]]
 
-no_input[]
-no_input[]
-no_input[]
+FUNC[]
+FUNC[]
+FUNC[]
 
 println["The result is", C]

@@ -162,6 +162,7 @@ def p_function_define(p):
             pop_scope()
             return result
         set_var(name, function)
+        return ""
     p[0] = define
 
 def p_try_function_define(p):
@@ -183,6 +184,7 @@ def p_try_function_define(p):
                 pop_scope()
                 return result
         set_var(name, try_block)
+        return ""
     p[0] = define
 
 def p_function_call(p):
@@ -199,7 +201,7 @@ def p_statement_println(p):
     args = p[3]
     def println():
         print(*[a() for a in args])
-        return "" # so it doesnt return none and look ugly in terminal
+        return ""
     p[0] = println
 
 def p_arglist_multi(p):
