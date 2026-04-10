@@ -32,10 +32,10 @@ class KanGUI:
         frame2 = tk.Frame(this.root) #frames for button
         frame2.pack(pady=5)
 
-        tk.Button(frame2, text="▶ Run", command=this.Process).grid(row=0, column=0, padx=5)
-        tk.Button(frame2, text="🔍 Tokens", command=this.Token).grid(row=0, column=1, padx=5)
-        tk.Button(frame2, text="🌳 Parse Tree", command=this.pr_tree).grid(row=0, column=2, padx=5)
-        tk.Button(frame2, text="🤖 Ask AI", command=this.compare_ai).grid(row=0, column=3, padx=5)
+        tk.Button(frame2, text="Run", command=this.Process).grid(row=0, column=0, padx=5)
+        tk.Button(frame2, text="Tokens", command=this.Token).grid(row=0, column=1, padx=5)
+        tk.Button(frame2, text="Parse Tree", command=this.pr_tree).grid(row=0, column=2, padx=5)
+        tk.Button(frame2, text="Ask AI", command=this.compare_ai).grid(row=0, column=3, padx=5)
     
 
         # Output Console
