@@ -1,5 +1,5 @@
 
-from ai_compare import AICompare
+from compare_ai import AICompare
 from kan_semantic import analyze, format_results
 
 import tkinter as tk
