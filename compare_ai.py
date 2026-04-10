@@ -1,14 +1,14 @@
 import google.generativeai as genai
 
 # Setup your Gemini API Key here
-genai.configure(api_key="AIzaSyDqKOq-VX_lDxDsZcuY_kxD3aEODPBlMNk")
+genai.configure(api_key="AIzaSyCaqwRGbbTDSK26XRqtVJWQjET3lcg5OuQ")
 
 class AICompare:
     @staticmethod
     def analyze(code):
         try:
             # Initialize the Gemini Flash model
-            model = genai.GenerativeModel('gemini-1.5-flash')
+            model = genai.GenerativeModel('gemini-2.0-flash-lite')
             
             # Construct the prompt with instructions for the KAN language
             prompt = (
@@ -27,14 +27,15 @@ class AICompare:
 
     @staticmethod
     def compare(compiler_output, ai_output):
-        # Cleans up whitespace for a more accurate comparison
         clean_compiler = compiler_output.strip()
-        
-        if not clean_compiler:
-            return "⚠️ No compiler output to compare."
 
-        # Checks if the compiler's specific result string exists within the AI's explanation
+        if not clean_compiler:
+            return "No compiler output to compare."
+
+        if ai_output.startswith("AI Error:"):
+            return "Comparison unavailable — AI did not respond successfully."
+
         if clean_compiler in ai_output:
-            return "✅ MATCH — Gemini agrees with the compiler's result."
+            return "MATCH — Gemini agrees with the compiler's result."
         else:
-            return "❌ DISCREPANCY — Gemini predicts a different outcome."
+            return "DISCREPANCY — Gemini predicts a different outcome."
