@@ -46,6 +46,13 @@ class KanGUI:
     
     def Process(this):
         c_ode = this.sec.get("1.0", tk.END)
+
+        errors = analyze(c_ode)
+        if errors:
+            this.output.delete("1.0", tk.END)
+            this.output.insert(tk.END, format_results(errors))
+            return
+
         try:
             ast = parser.parse(c_ode)
 
@@ -117,35 +124,6 @@ class KanGUI:
 
         except Exception as e:
             messagebox.showerror("AI Compare Error", str(e))
-
-
-
-    def run_code(self):
-        code = self.code_area.get("1.0", tk.END)
-
-        # 🔍 Run semantic analysis FIRST
-        errors = analyze(code)
-
-        if errors:
-            self.output.delete("1.0", tk.END)
-            self.output.insert(tk.END, format_results(errors))
-            return
-
-        # ▶️ Only execute if no errors
-        try:
-            ast = parser.parse(code)
-
-            results = []
-            for stmt in ast:
-                res = stmt()
-                if res is not None:
-                    results.append(str(res))
-
-            self.output.delete("1.0", tk.END)
-            self.output.insert(tk.END, "\n".join(results))
-
-        except Exception as e:
-            messagebox.showerror("Runtime Error", str(e))
    
     
 # =========================
