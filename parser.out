@@ -18,36 +18,46 @@ Rule 12    program -> program statement NEWLINE
 Rule 13    program -> program statement
 Rule 14    program -> statement NEWLINE
 Rule 15    program -> statement
-Rule 16    statement -> LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET
-Rule 17    statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET
-Rule 18    arglist -> arglist COMMA expression
-Rule 19    arglist -> expression
+Rule 16    program -> program NEWLINE
+Rule 17    program -> NEWLINE
+Rule 18    expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+Rule 19    statement -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+Rule 20    expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+Rule 21    expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+Rule 22    paramlist -> paramlist COMMA IDENTIFIER
+Rule 23    paramlist -> IDENTIFIER
+Rule 24    expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+Rule 25    expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+Rule 26    statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET
+Rule 27    arglist -> arglist COMMA expression
+Rule 28    arglist -> expression
 
 Terminals, with rules where they appear
 
-COMMA                : 18
+COMMA                : 22 27
 DIVIDE               : 6
 EQUALS               : 10
-IDENTIFIER           : 9 10
+IDENTIFIER           : 9 10 20 21 22 23 24 25
 LPARENTH             : 1
-LSQRBRACKET          : 16 16 17
+LSQRBRACKET          : 18 18 19 19 20 20 21 21 24 24 25 25 26
 MINUS                : 3 4
-NEWLINE              : 12 14 16
+NEWLINE              : 12 14 16 17
 NUMBER               : 7
 PLUS                 : 2
-PRINTLN              : 17
+PRINTLN              : 26
 RPARENTH             : 1
-RSQRBRACKET          : 16 16 17
+RSQRBRACKET          : 18 18 19 19 20 20 21 21 24 24 25 25 26
 STRING               : 8
 TIMES                : 5
 error                : 
 
 Nonterminals, with rules where they appear
 
-arglist              : 17 18
-expression           : 1 2 2 3 3 4 5 5 6 6 10 11 18 19
-program              : 12 13 0
-statement            : 12 13 14 15 16 16
+arglist              : 26 27
+expression           : 1 2 2 3 3 4 5 5 6 6 10 11 27 28
+paramlist            : 22 24 25
+program              : 12 13 16 18 19 19 20 21 21 24 25 25 0
+statement            : 12 13 14 15
 
 Parsing method: LALR
 
@@ -58,10 +68,12 @@ state 0
     (13) program -> . program statement
     (14) program -> . statement NEWLINE
     (15) program -> . statement
+    (16) program -> . program NEWLINE
+    (17) program -> . NEWLINE
     (10) statement -> . IDENTIFIER EQUALS expression
     (11) statement -> . expression
-    (16) statement -> . LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET
-    (17) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
+    (19) statement -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (26) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
     (1) expression -> . LPARENTH expression RPARENTH
     (2) expression -> . expression PLUS expression
     (3) expression -> . expression MINUS expression
@@ -71,28 +83,35 @@ state 0
     (7) expression -> . NUMBER
     (8) expression -> . STRING
     (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
 
-    IDENTIFIER      shift and go to state 3
-    LSQRBRACKET     shift and go to state 5
-    PRINTLN         shift and go to state 6
-    LPARENTH        shift and go to state 7
-    MINUS           shift and go to state 8
-    NUMBER          shift and go to state 9
-    STRING          shift and go to state 10
+    NEWLINE         shift and go to state 3
+    IDENTIFIER      shift and go to state 4
+    LSQRBRACKET     shift and go to state 6
+    PRINTLN         shift and go to state 7
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
 
     program                        shift and go to state 1
     statement                      shift and go to state 2
-    expression                     shift and go to state 4
+    expression                     shift and go to state 5
 
 state 1
 
     (0) S' -> program .
     (12) program -> program . statement NEWLINE
     (13) program -> program . statement
+    (16) program -> program . NEWLINE
     (10) statement -> . IDENTIFIER EQUALS expression
     (11) statement -> . expression
-    (16) statement -> . LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET
-    (17) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
+    (19) statement -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (26) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
     (1) expression -> . LPARENTH expression RPARENTH
     (2) expression -> . expression PLUS expression
     (3) expression -> . expression MINUS expression
@@ -102,24 +121,31 @@ state 1
     (7) expression -> . NUMBER
     (8) expression -> . STRING
     (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
 
-    IDENTIFIER      shift and go to state 3
-    LSQRBRACKET     shift and go to state 5
-    PRINTLN         shift and go to state 6
-    LPARENTH        shift and go to state 7
-    MINUS           shift and go to state 8
-    NUMBER          shift and go to state 9
-    STRING          shift and go to state 10
+    NEWLINE         shift and go to state 13
+    IDENTIFIER      shift and go to state 4
+    LSQRBRACKET     shift and go to state 6
+    PRINTLN         shift and go to state 7
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
 
-    statement                      shift and go to state 11
-    expression                     shift and go to state 4
+    statement                      shift and go to state 12
+    expression                     shift and go to state 5
 
 state 2
 
     (14) program -> statement . NEWLINE
     (15) program -> statement .
 
-    NEWLINE         shift and go to state 12
+  ! shift/reduce conflict for NEWLINE resolved as shift
+    NEWLINE         shift and go to state 14
     IDENTIFIER      reduce using rule 15 (program -> statement .)
     LSQRBRACKET     reduce using rule 15 (program -> statement .)
     PRINTLN         reduce using rule 15 (program -> statement .)
@@ -128,30 +154,56 @@ state 2
     NUMBER          reduce using rule 15 (program -> statement .)
     STRING          reduce using rule 15 (program -> statement .)
     $end            reduce using rule 15 (program -> statement .)
+    RSQRBRACKET     reduce using rule 15 (program -> statement .)
+
+  ! NEWLINE         [ reduce using rule 15 (program -> statement .) ]
 
 
 state 3
 
+    (17) program -> NEWLINE .
+
+    NEWLINE         reduce using rule 17 (program -> NEWLINE .)
+    IDENTIFIER      reduce using rule 17 (program -> NEWLINE .)
+    LSQRBRACKET     reduce using rule 17 (program -> NEWLINE .)
+    PRINTLN         reduce using rule 17 (program -> NEWLINE .)
+    LPARENTH        reduce using rule 17 (program -> NEWLINE .)
+    MINUS           reduce using rule 17 (program -> NEWLINE .)
+    NUMBER          reduce using rule 17 (program -> NEWLINE .)
+    STRING          reduce using rule 17 (program -> NEWLINE .)
+    $end            reduce using rule 17 (program -> NEWLINE .)
+    RSQRBRACKET     reduce using rule 17 (program -> NEWLINE .)
+
+
+state 4
+
     (10) statement -> IDENTIFIER . EQUALS expression
     (9) expression -> IDENTIFIER .
+    (20) expression -> IDENTIFIER . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> IDENTIFIER . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> IDENTIFIER . LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> IDENTIFIER . LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
 
-    EQUALS          shift and go to state 13
+  ! shift/reduce conflict for LSQRBRACKET resolved as shift
+    EQUALS          shift and go to state 15
     PLUS            reduce using rule 9 (expression -> IDENTIFIER .)
     MINUS           reduce using rule 9 (expression -> IDENTIFIER .)
     TIMES           reduce using rule 9 (expression -> IDENTIFIER .)
     DIVIDE          reduce using rule 9 (expression -> IDENTIFIER .)
     NEWLINE         reduce using rule 9 (expression -> IDENTIFIER .)
     IDENTIFIER      reduce using rule 9 (expression -> IDENTIFIER .)
-    LSQRBRACKET     reduce using rule 9 (expression -> IDENTIFIER .)
     PRINTLN         reduce using rule 9 (expression -> IDENTIFIER .)
     LPARENTH        reduce using rule 9 (expression -> IDENTIFIER .)
     NUMBER          reduce using rule 9 (expression -> IDENTIFIER .)
     STRING          reduce using rule 9 (expression -> IDENTIFIER .)
     $end            reduce using rule 9 (expression -> IDENTIFIER .)
     RSQRBRACKET     reduce using rule 9 (expression -> IDENTIFIER .)
+    LSQRBRACKET     shift and go to state 16
+
+  ! LSQRBRACKET     [ reduce using rule 9 (expression -> IDENTIFIER .) ]
 
 
-state 4
+state 5
 
     (11) statement -> expression .
     (2) expression -> expression . PLUS expression
@@ -169,29 +221,30 @@ state 4
     STRING          reduce using rule 11 (statement -> expression .)
     $end            reduce using rule 11 (statement -> expression .)
     RSQRBRACKET     reduce using rule 11 (statement -> expression .)
-    PLUS            shift and go to state 14
-    MINUS           shift and go to state 15
-    TIMES           shift and go to state 16
-    DIVIDE          shift and go to state 17
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
 
   ! MINUS           [ reduce using rule 11 (statement -> expression .) ]
 
 
-state 5
-
-    (16) statement -> LSQRBRACKET . LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET
-
-    LSQRBRACKET     shift and go to state 18
-
-
 state 6
 
-    (17) statement -> PRINTLN . LSQRBRACKET arglist RSQRBRACKET
+    (19) statement -> LSQRBRACKET . LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (18) expression -> LSQRBRACKET . LSQRBRACKET program RSQRBRACKET RSQRBRACKET
 
-    LSQRBRACKET     shift and go to state 19
+    LSQRBRACKET     shift and go to state 21
 
 
 state 7
+
+    (26) statement -> PRINTLN . LSQRBRACKET arglist RSQRBRACKET
+
+    LSQRBRACKET     shift and go to state 22
+
+
+state 8
 
     (1) expression -> LPARENTH . expression RPARENTH
     (1) expression -> . LPARENTH expression RPARENTH
@@ -203,16 +256,22 @@ state 7
     (7) expression -> . NUMBER
     (8) expression -> . STRING
     (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
 
-    LPARENTH        shift and go to state 7
-    MINUS           shift and go to state 8
-    NUMBER          shift and go to state 9
-    STRING          shift and go to state 10
-    IDENTIFIER      shift and go to state 21
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+    IDENTIFIER      shift and go to state 24
+    LSQRBRACKET     shift and go to state 25
 
-    expression                     shift and go to state 20
+    expression                     shift and go to state 23
 
-state 8
+state 9
 
     (4) expression -> MINUS . expression
     (1) expression -> . LPARENTH expression RPARENTH
@@ -224,16 +283,22 @@ state 8
     (7) expression -> . NUMBER
     (8) expression -> . STRING
     (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
 
-    LPARENTH        shift and go to state 7
-    MINUS           shift and go to state 8
-    NUMBER          shift and go to state 9
-    STRING          shift and go to state 10
-    IDENTIFIER      shift and go to state 21
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+    IDENTIFIER      shift and go to state 24
+    LSQRBRACKET     shift and go to state 25
 
-    expression                     shift and go to state 22
+    expression                     shift and go to state 26
 
-state 9
+state 10
 
     (7) expression -> NUMBER .
 
@@ -254,7 +319,7 @@ state 9
     COMMA           reduce using rule 7 (expression -> NUMBER .)
 
 
-state 10
+state 11
 
     (8) expression -> STRING .
 
@@ -275,12 +340,13 @@ state 10
     COMMA           reduce using rule 8 (expression -> STRING .)
 
 
-state 11
+state 12
 
     (12) program -> program statement . NEWLINE
     (13) program -> program statement .
 
-    NEWLINE         shift and go to state 23
+  ! shift/reduce conflict for NEWLINE resolved as shift
+    NEWLINE         shift and go to state 27
     IDENTIFIER      reduce using rule 13 (program -> program statement .)
     LSQRBRACKET     reduce using rule 13 (program -> program statement .)
     PRINTLN         reduce using rule 13 (program -> program statement .)
@@ -289,12 +355,32 @@ state 11
     NUMBER          reduce using rule 13 (program -> program statement .)
     STRING          reduce using rule 13 (program -> program statement .)
     $end            reduce using rule 13 (program -> program statement .)
+    RSQRBRACKET     reduce using rule 13 (program -> program statement .)
+
+  ! NEWLINE         [ reduce using rule 13 (program -> program statement .) ]
 
 
-state 12
+state 13
+
+    (16) program -> program NEWLINE .
+
+    NEWLINE         reduce using rule 16 (program -> program NEWLINE .)
+    IDENTIFIER      reduce using rule 16 (program -> program NEWLINE .)
+    LSQRBRACKET     reduce using rule 16 (program -> program NEWLINE .)
+    PRINTLN         reduce using rule 16 (program -> program NEWLINE .)
+    LPARENTH        reduce using rule 16 (program -> program NEWLINE .)
+    MINUS           reduce using rule 16 (program -> program NEWLINE .)
+    NUMBER          reduce using rule 16 (program -> program NEWLINE .)
+    STRING          reduce using rule 16 (program -> program NEWLINE .)
+    $end            reduce using rule 16 (program -> program NEWLINE .)
+    RSQRBRACKET     reduce using rule 16 (program -> program NEWLINE .)
+
+
+state 14
 
     (14) program -> statement NEWLINE .
 
+    NEWLINE         reduce using rule 14 (program -> statement NEWLINE .)
     IDENTIFIER      reduce using rule 14 (program -> statement NEWLINE .)
     LSQRBRACKET     reduce using rule 14 (program -> statement NEWLINE .)
     PRINTLN         reduce using rule 14 (program -> statement NEWLINE .)
@@ -303,9 +389,10 @@ state 12
     NUMBER          reduce using rule 14 (program -> statement NEWLINE .)
     STRING          reduce using rule 14 (program -> statement NEWLINE .)
     $end            reduce using rule 14 (program -> statement NEWLINE .)
+    RSQRBRACKET     reduce using rule 14 (program -> statement NEWLINE .)
 
 
-state 13
+state 15
 
     (10) statement -> IDENTIFIER EQUALS . expression
     (1) expression -> . LPARENTH expression RPARENTH
@@ -317,16 +404,36 @@ state 13
     (7) expression -> . NUMBER
     (8) expression -> . STRING
     (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
 
-    LPARENTH        shift and go to state 7
-    MINUS           shift and go to state 8
-    NUMBER          shift and go to state 9
-    STRING          shift and go to state 10
-    IDENTIFIER      shift and go to state 21
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+    IDENTIFIER      shift and go to state 24
+    LSQRBRACKET     shift and go to state 25
 
-    expression                     shift and go to state 24
+    expression                     shift and go to state 28
 
-state 14
+state 16
+
+    (20) expression -> IDENTIFIER LSQRBRACKET . LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> IDENTIFIER LSQRBRACKET . LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> IDENTIFIER LSQRBRACKET . paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> IDENTIFIER LSQRBRACKET . paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (22) paramlist -> . paramlist COMMA IDENTIFIER
+    (23) paramlist -> . IDENTIFIER
+
+    LSQRBRACKET     shift and go to state 30
+    IDENTIFIER      shift and go to state 29
+
+    paramlist                      shift and go to state 31
+
+state 17
 
     (2) expression -> expression PLUS . expression
     (1) expression -> . LPARENTH expression RPARENTH
@@ -338,16 +445,22 @@ state 14
     (7) expression -> . NUMBER
     (8) expression -> . STRING
     (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
 
-    LPARENTH        shift and go to state 7
-    MINUS           shift and go to state 8
-    NUMBER          shift and go to state 9
-    STRING          shift and go to state 10
-    IDENTIFIER      shift and go to state 21
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+    IDENTIFIER      shift and go to state 24
+    LSQRBRACKET     shift and go to state 25
 
-    expression                     shift and go to state 25
+    expression                     shift and go to state 32
 
-state 15
+state 18
 
     (3) expression -> expression MINUS . expression
     (1) expression -> . LPARENTH expression RPARENTH
@@ -359,16 +472,22 @@ state 15
     (7) expression -> . NUMBER
     (8) expression -> . STRING
     (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
 
-    LPARENTH        shift and go to state 7
-    MINUS           shift and go to state 8
-    NUMBER          shift and go to state 9
-    STRING          shift and go to state 10
-    IDENTIFIER      shift and go to state 21
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+    IDENTIFIER      shift and go to state 24
+    LSQRBRACKET     shift and go to state 25
 
-    expression                     shift and go to state 26
+    expression                     shift and go to state 33
 
-state 16
+state 19
 
     (5) expression -> expression TIMES . expression
     (1) expression -> . LPARENTH expression RPARENTH
@@ -380,16 +499,22 @@ state 16
     (7) expression -> . NUMBER
     (8) expression -> . STRING
     (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
 
-    LPARENTH        shift and go to state 7
-    MINUS           shift and go to state 8
-    NUMBER          shift and go to state 9
-    STRING          shift and go to state 10
-    IDENTIFIER      shift and go to state 21
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+    IDENTIFIER      shift and go to state 24
+    LSQRBRACKET     shift and go to state 25
 
-    expression                     shift and go to state 27
+    expression                     shift and go to state 34
 
-state 17
+state 20
 
     (6) expression -> expression DIVIDE . expression
     (1) expression -> . LPARENTH expression RPARENTH
@@ -401,22 +526,35 @@ state 17
     (7) expression -> . NUMBER
     (8) expression -> . STRING
     (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
 
-    LPARENTH        shift and go to state 7
-    MINUS           shift and go to state 8
-    NUMBER          shift and go to state 9
-    STRING          shift and go to state 10
-    IDENTIFIER      shift and go to state 21
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+    IDENTIFIER      shift and go to state 24
+    LSQRBRACKET     shift and go to state 25
 
-    expression                     shift and go to state 28
+    expression                     shift and go to state 35
 
-state 18
+state 21
 
-    (16) statement -> LSQRBRACKET LSQRBRACKET . statement RSQRBRACKET NEWLINE statement RSQRBRACKET
+    (19) statement -> LSQRBRACKET LSQRBRACKET . program RSQRBRACKET program RSQRBRACKET
+    (18) expression -> LSQRBRACKET LSQRBRACKET . program RSQRBRACKET RSQRBRACKET
+    (12) program -> . program statement NEWLINE
+    (13) program -> . program statement
+    (14) program -> . statement NEWLINE
+    (15) program -> . statement
+    (16) program -> . program NEWLINE
+    (17) program -> . NEWLINE
     (10) statement -> . IDENTIFIER EQUALS expression
     (11) statement -> . expression
-    (16) statement -> . LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET
-    (17) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
+    (19) statement -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (26) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
     (1) expression -> . LPARENTH expression RPARENTH
     (2) expression -> . expression PLUS expression
     (3) expression -> . expression MINUS expression
@@ -426,23 +564,30 @@ state 18
     (7) expression -> . NUMBER
     (8) expression -> . STRING
     (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
 
-    IDENTIFIER      shift and go to state 3
-    LSQRBRACKET     shift and go to state 5
-    PRINTLN         shift and go to state 6
-    LPARENTH        shift and go to state 7
-    MINUS           shift and go to state 8
-    NUMBER          shift and go to state 9
-    STRING          shift and go to state 10
+    NEWLINE         shift and go to state 3
+    IDENTIFIER      shift and go to state 4
+    LSQRBRACKET     shift and go to state 6
+    PRINTLN         shift and go to state 7
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
 
-    statement                      shift and go to state 29
-    expression                     shift and go to state 4
+    program                        shift and go to state 36
+    statement                      shift and go to state 2
+    expression                     shift and go to state 5
 
-state 19
+state 22
 
-    (17) statement -> PRINTLN LSQRBRACKET . arglist RSQRBRACKET
-    (18) arglist -> . arglist COMMA expression
-    (19) arglist -> . expression
+    (26) statement -> PRINTLN LSQRBRACKET . arglist RSQRBRACKET
+    (27) arglist -> . arglist COMMA expression
+    (28) arglist -> . expression
     (1) expression -> . LPARENTH expression RPARENTH
     (2) expression -> . expression PLUS expression
     (3) expression -> . expression MINUS expression
@@ -452,17 +597,23 @@ state 19
     (7) expression -> . NUMBER
     (8) expression -> . STRING
     (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
 
-    LPARENTH        shift and go to state 7
-    MINUS           shift and go to state 8
-    NUMBER          shift and go to state 9
-    STRING          shift and go to state 10
-    IDENTIFIER      shift and go to state 21
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+    IDENTIFIER      shift and go to state 24
+    LSQRBRACKET     shift and go to state 25
 
-    arglist                        shift and go to state 30
-    expression                     shift and go to state 31
+    arglist                        shift and go to state 37
+    expression                     shift and go to state 38
 
-state 20
+state 23
 
     (1) expression -> LPARENTH expression . RPARENTH
     (2) expression -> expression . PLUS expression
@@ -470,17 +621,22 @@ state 20
     (5) expression -> expression . TIMES expression
     (6) expression -> expression . DIVIDE expression
 
-    RPARENTH        shift and go to state 32
-    PLUS            shift and go to state 14
-    MINUS           shift and go to state 15
-    TIMES           shift and go to state 16
-    DIVIDE          shift and go to state 17
+    RPARENTH        shift and go to state 39
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
 
 
-state 21
+state 24
 
     (9) expression -> IDENTIFIER .
+    (20) expression -> IDENTIFIER . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> IDENTIFIER . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> IDENTIFIER . LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> IDENTIFIER . LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
 
+  ! shift/reduce conflict for LSQRBRACKET resolved as shift
     RPARENTH        reduce using rule 9 (expression -> IDENTIFIER .)
     PLUS            reduce using rule 9 (expression -> IDENTIFIER .)
     MINUS           reduce using rule 9 (expression -> IDENTIFIER .)
@@ -488,7 +644,6 @@ state 21
     DIVIDE          reduce using rule 9 (expression -> IDENTIFIER .)
     NEWLINE         reduce using rule 9 (expression -> IDENTIFIER .)
     IDENTIFIER      reduce using rule 9 (expression -> IDENTIFIER .)
-    LSQRBRACKET     reduce using rule 9 (expression -> IDENTIFIER .)
     PRINTLN         reduce using rule 9 (expression -> IDENTIFIER .)
     LPARENTH        reduce using rule 9 (expression -> IDENTIFIER .)
     NUMBER          reduce using rule 9 (expression -> IDENTIFIER .)
@@ -496,9 +651,19 @@ state 21
     $end            reduce using rule 9 (expression -> IDENTIFIER .)
     RSQRBRACKET     reduce using rule 9 (expression -> IDENTIFIER .)
     COMMA           reduce using rule 9 (expression -> IDENTIFIER .)
+    LSQRBRACKET     shift and go to state 16
+
+  ! LSQRBRACKET     [ reduce using rule 9 (expression -> IDENTIFIER .) ]
 
 
-state 22
+state 25
+
+    (18) expression -> LSQRBRACKET . LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+
+    LSQRBRACKET     shift and go to state 40
+
+
+state 26
 
     (4) expression -> MINUS expression .
     (2) expression -> expression . PLUS expression
@@ -522,16 +687,17 @@ state 22
     RSQRBRACKET     reduce using rule 4 (expression -> MINUS expression .)
     COMMA           reduce using rule 4 (expression -> MINUS expression .)
 
-  ! PLUS            [ shift and go to state 14 ]
-  ! MINUS           [ shift and go to state 15 ]
-  ! TIMES           [ shift and go to state 16 ]
-  ! DIVIDE          [ shift and go to state 17 ]
+  ! PLUS            [ shift and go to state 17 ]
+  ! MINUS           [ shift and go to state 18 ]
+  ! TIMES           [ shift and go to state 19 ]
+  ! DIVIDE          [ shift and go to state 20 ]
 
 
-state 23
+state 27
 
     (12) program -> program statement NEWLINE .
 
+    NEWLINE         reduce using rule 12 (program -> program statement NEWLINE .)
     IDENTIFIER      reduce using rule 12 (program -> program statement NEWLINE .)
     LSQRBRACKET     reduce using rule 12 (program -> program statement NEWLINE .)
     PRINTLN         reduce using rule 12 (program -> program statement NEWLINE .)
@@ -540,9 +706,10 @@ state 23
     NUMBER          reduce using rule 12 (program -> program statement NEWLINE .)
     STRING          reduce using rule 12 (program -> program statement NEWLINE .)
     $end            reduce using rule 12 (program -> program statement NEWLINE .)
+    RSQRBRACKET     reduce using rule 12 (program -> program statement NEWLINE .)
 
 
-state 24
+state 28
 
     (10) statement -> IDENTIFIER EQUALS expression .
     (2) expression -> expression . PLUS expression
@@ -560,15 +727,75 @@ state 24
     STRING          reduce using rule 10 (statement -> IDENTIFIER EQUALS expression .)
     $end            reduce using rule 10 (statement -> IDENTIFIER EQUALS expression .)
     RSQRBRACKET     reduce using rule 10 (statement -> IDENTIFIER EQUALS expression .)
-    PLUS            shift and go to state 14
-    MINUS           shift and go to state 15
-    TIMES           shift and go to state 16
-    DIVIDE          shift and go to state 17
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
 
   ! MINUS           [ reduce using rule 10 (statement -> IDENTIFIER EQUALS expression .) ]
 
 
-state 25
+state 29
+
+    (23) paramlist -> IDENTIFIER .
+
+    LSQRBRACKET     reduce using rule 23 (paramlist -> IDENTIFIER .)
+    COMMA           reduce using rule 23 (paramlist -> IDENTIFIER .)
+
+
+state 30
+
+    (20) expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET . program RSQRBRACKET RSQRBRACKET
+    (21) expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET . program RSQRBRACKET program RSQRBRACKET
+    (12) program -> . program statement NEWLINE
+    (13) program -> . program statement
+    (14) program -> . statement NEWLINE
+    (15) program -> . statement
+    (16) program -> . program NEWLINE
+    (17) program -> . NEWLINE
+    (10) statement -> . IDENTIFIER EQUALS expression
+    (11) statement -> . expression
+    (19) statement -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (26) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
+    (1) expression -> . LPARENTH expression RPARENTH
+    (2) expression -> . expression PLUS expression
+    (3) expression -> . expression MINUS expression
+    (4) expression -> . MINUS expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . NUMBER
+    (8) expression -> . STRING
+    (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+
+    NEWLINE         shift and go to state 3
+    IDENTIFIER      shift and go to state 4
+    LSQRBRACKET     shift and go to state 6
+    PRINTLN         shift and go to state 7
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+
+    program                        shift and go to state 41
+    statement                      shift and go to state 2
+    expression                     shift and go to state 5
+
+state 31
+
+    (24) expression -> IDENTIFIER LSQRBRACKET paramlist . LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> IDENTIFIER LSQRBRACKET paramlist . LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (22) paramlist -> paramlist . COMMA IDENTIFIER
+
+    LSQRBRACKET     shift and go to state 42
+    COMMA           shift and go to state 43
+
+
+state 32
 
     (2) expression -> expression PLUS expression .
     (2) expression -> expression . PLUS expression
@@ -589,16 +816,16 @@ state 25
     RPARENTH        reduce using rule 2 (expression -> expression PLUS expression .)
     RSQRBRACKET     reduce using rule 2 (expression -> expression PLUS expression .)
     COMMA           reduce using rule 2 (expression -> expression PLUS expression .)
-    TIMES           shift and go to state 16
-    DIVIDE          shift and go to state 17
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
 
   ! TIMES           [ reduce using rule 2 (expression -> expression PLUS expression .) ]
   ! DIVIDE          [ reduce using rule 2 (expression -> expression PLUS expression .) ]
-  ! PLUS            [ shift and go to state 14 ]
-  ! MINUS           [ shift and go to state 15 ]
+  ! PLUS            [ shift and go to state 17 ]
+  ! MINUS           [ shift and go to state 18 ]
 
 
-state 26
+state 33
 
     (3) expression -> expression MINUS expression .
     (2) expression -> expression . PLUS expression
@@ -619,16 +846,16 @@ state 26
     RPARENTH        reduce using rule 3 (expression -> expression MINUS expression .)
     RSQRBRACKET     reduce using rule 3 (expression -> expression MINUS expression .)
     COMMA           reduce using rule 3 (expression -> expression MINUS expression .)
-    TIMES           shift and go to state 16
-    DIVIDE          shift and go to state 17
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
 
   ! TIMES           [ reduce using rule 3 (expression -> expression MINUS expression .) ]
   ! DIVIDE          [ reduce using rule 3 (expression -> expression MINUS expression .) ]
-  ! PLUS            [ shift and go to state 14 ]
-  ! MINUS           [ shift and go to state 15 ]
+  ! PLUS            [ shift and go to state 17 ]
+  ! MINUS           [ shift and go to state 18 ]
 
 
-state 27
+state 34
 
     (5) expression -> expression TIMES expression .
     (2) expression -> expression . PLUS expression
@@ -652,13 +879,13 @@ state 27
     RSQRBRACKET     reduce using rule 5 (expression -> expression TIMES expression .)
     COMMA           reduce using rule 5 (expression -> expression TIMES expression .)
 
-  ! PLUS            [ shift and go to state 14 ]
-  ! MINUS           [ shift and go to state 15 ]
-  ! TIMES           [ shift and go to state 16 ]
-  ! DIVIDE          [ shift and go to state 17 ]
+  ! PLUS            [ shift and go to state 17 ]
+  ! MINUS           [ shift and go to state 18 ]
+  ! TIMES           [ shift and go to state 19 ]
+  ! DIVIDE          [ shift and go to state 20 ]
 
 
-state 28
+state 35
 
     (6) expression -> expression DIVIDE expression .
     (2) expression -> expression . PLUS expression
@@ -682,45 +909,77 @@ state 28
     RSQRBRACKET     reduce using rule 6 (expression -> expression DIVIDE expression .)
     COMMA           reduce using rule 6 (expression -> expression DIVIDE expression .)
 
-  ! PLUS            [ shift and go to state 14 ]
-  ! MINUS           [ shift and go to state 15 ]
-  ! TIMES           [ shift and go to state 16 ]
-  ! DIVIDE          [ shift and go to state 17 ]
+  ! PLUS            [ shift and go to state 17 ]
+  ! MINUS           [ shift and go to state 18 ]
+  ! TIMES           [ shift and go to state 19 ]
+  ! DIVIDE          [ shift and go to state 20 ]
 
 
-state 29
+state 36
 
-    (16) statement -> LSQRBRACKET LSQRBRACKET statement . RSQRBRACKET NEWLINE statement RSQRBRACKET
+    (19) statement -> LSQRBRACKET LSQRBRACKET program . RSQRBRACKET program RSQRBRACKET
+    (18) expression -> LSQRBRACKET LSQRBRACKET program . RSQRBRACKET RSQRBRACKET
+    (12) program -> program . statement NEWLINE
+    (13) program -> program . statement
+    (16) program -> program . NEWLINE
+    (10) statement -> . IDENTIFIER EQUALS expression
+    (11) statement -> . expression
+    (19) statement -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (26) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
+    (1) expression -> . LPARENTH expression RPARENTH
+    (2) expression -> . expression PLUS expression
+    (3) expression -> . expression MINUS expression
+    (4) expression -> . MINUS expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . NUMBER
+    (8) expression -> . STRING
+    (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
 
-    RSQRBRACKET     shift and go to state 33
+    RSQRBRACKET     shift and go to state 44
+    NEWLINE         shift and go to state 13
+    IDENTIFIER      shift and go to state 4
+    LSQRBRACKET     shift and go to state 6
+    PRINTLN         shift and go to state 7
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+
+    statement                      shift and go to state 12
+    expression                     shift and go to state 5
+
+state 37
+
+    (26) statement -> PRINTLN LSQRBRACKET arglist . RSQRBRACKET
+    (27) arglist -> arglist . COMMA expression
+
+    RSQRBRACKET     shift and go to state 45
+    COMMA           shift and go to state 46
 
 
-state 30
+state 38
 
-    (17) statement -> PRINTLN LSQRBRACKET arglist . RSQRBRACKET
-    (18) arglist -> arglist . COMMA expression
-
-    RSQRBRACKET     shift and go to state 34
-    COMMA           shift and go to state 35
-
-
-state 31
-
-    (19) arglist -> expression .
+    (28) arglist -> expression .
     (2) expression -> expression . PLUS expression
     (3) expression -> expression . MINUS expression
     (5) expression -> expression . TIMES expression
     (6) expression -> expression . DIVIDE expression
 
-    RSQRBRACKET     reduce using rule 19 (arglist -> expression .)
-    COMMA           reduce using rule 19 (arglist -> expression .)
-    PLUS            shift and go to state 14
-    MINUS           shift and go to state 15
-    TIMES           shift and go to state 16
-    DIVIDE          shift and go to state 17
+    RSQRBRACKET     reduce using rule 28 (arglist -> expression .)
+    COMMA           reduce using rule 28 (arglist -> expression .)
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
 
 
-state 32
+state 39
 
     (1) expression -> LPARENTH expression RPARENTH .
 
@@ -741,57 +1000,19 @@ state 32
     COMMA           reduce using rule 1 (expression -> LPARENTH expression RPARENTH .)
 
 
-state 33
+state 40
 
-    (16) statement -> LSQRBRACKET LSQRBRACKET statement RSQRBRACKET . NEWLINE statement RSQRBRACKET
-
-    NEWLINE         shift and go to state 36
-
-
-state 34
-
-    (17) statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .
-
-    NEWLINE         reduce using rule 17 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
-    IDENTIFIER      reduce using rule 17 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
-    LSQRBRACKET     reduce using rule 17 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
-    PRINTLN         reduce using rule 17 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
-    LPARENTH        reduce using rule 17 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
-    MINUS           reduce using rule 17 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
-    NUMBER          reduce using rule 17 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
-    STRING          reduce using rule 17 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
-    $end            reduce using rule 17 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
-    RSQRBRACKET     reduce using rule 17 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
-
-
-state 35
-
-    (18) arglist -> arglist COMMA . expression
-    (1) expression -> . LPARENTH expression RPARENTH
-    (2) expression -> . expression PLUS expression
-    (3) expression -> . expression MINUS expression
-    (4) expression -> . MINUS expression
-    (5) expression -> . expression TIMES expression
-    (6) expression -> . expression DIVIDE expression
-    (7) expression -> . NUMBER
-    (8) expression -> . STRING
-    (9) expression -> . IDENTIFIER
-
-    LPARENTH        shift and go to state 7
-    MINUS           shift and go to state 8
-    NUMBER          shift and go to state 9
-    STRING          shift and go to state 10
-    IDENTIFIER      shift and go to state 21
-
-    expression                     shift and go to state 37
-
-state 36
-
-    (16) statement -> LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE . statement RSQRBRACKET
+    (18) expression -> LSQRBRACKET LSQRBRACKET . program RSQRBRACKET RSQRBRACKET
+    (12) program -> . program statement NEWLINE
+    (13) program -> . program statement
+    (14) program -> . statement NEWLINE
+    (15) program -> . statement
+    (16) program -> . program NEWLINE
+    (17) program -> . NEWLINE
     (10) statement -> . IDENTIFIER EQUALS expression
     (11) statement -> . expression
-    (16) statement -> . LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET
-    (17) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
+    (19) statement -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (26) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
     (1) expression -> . LPARENTH expression RPARENTH
     (2) expression -> . expression PLUS expression
     (3) expression -> . expression MINUS expression
@@ -801,58 +1022,633 @@ state 36
     (7) expression -> . NUMBER
     (8) expression -> . STRING
     (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
 
-    IDENTIFIER      shift and go to state 3
-    LSQRBRACKET     shift and go to state 5
-    PRINTLN         shift and go to state 6
-    LPARENTH        shift and go to state 7
-    MINUS           shift and go to state 8
-    NUMBER          shift and go to state 9
-    STRING          shift and go to state 10
+    NEWLINE         shift and go to state 3
+    IDENTIFIER      shift and go to state 4
+    LSQRBRACKET     shift and go to state 6
+    PRINTLN         shift and go to state 7
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
 
-    statement                      shift and go to state 38
-    expression                     shift and go to state 4
+    program                        shift and go to state 47
+    statement                      shift and go to state 2
+    expression                     shift and go to state 5
 
-state 37
+state 41
 
-    (18) arglist -> arglist COMMA expression .
+    (20) expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program . RSQRBRACKET RSQRBRACKET
+    (21) expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program . RSQRBRACKET program RSQRBRACKET
+    (12) program -> program . statement NEWLINE
+    (13) program -> program . statement
+    (16) program -> program . NEWLINE
+    (10) statement -> . IDENTIFIER EQUALS expression
+    (11) statement -> . expression
+    (19) statement -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (26) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
+    (1) expression -> . LPARENTH expression RPARENTH
+    (2) expression -> . expression PLUS expression
+    (3) expression -> . expression MINUS expression
+    (4) expression -> . MINUS expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . NUMBER
+    (8) expression -> . STRING
+    (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+
+    RSQRBRACKET     shift and go to state 48
+    NEWLINE         shift and go to state 13
+    IDENTIFIER      shift and go to state 4
+    LSQRBRACKET     shift and go to state 6
+    PRINTLN         shift and go to state 7
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+
+    statement                      shift and go to state 12
+    expression                     shift and go to state 5
+
+state 42
+
+    (24) expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET . program RSQRBRACKET RSQRBRACKET
+    (25) expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET . program RSQRBRACKET program RSQRBRACKET
+    (12) program -> . program statement NEWLINE
+    (13) program -> . program statement
+    (14) program -> . statement NEWLINE
+    (15) program -> . statement
+    (16) program -> . program NEWLINE
+    (17) program -> . NEWLINE
+    (10) statement -> . IDENTIFIER EQUALS expression
+    (11) statement -> . expression
+    (19) statement -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (26) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
+    (1) expression -> . LPARENTH expression RPARENTH
+    (2) expression -> . expression PLUS expression
+    (3) expression -> . expression MINUS expression
+    (4) expression -> . MINUS expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . NUMBER
+    (8) expression -> . STRING
+    (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+
+    NEWLINE         shift and go to state 3
+    IDENTIFIER      shift and go to state 4
+    LSQRBRACKET     shift and go to state 6
+    PRINTLN         shift and go to state 7
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+
+    program                        shift and go to state 49
+    statement                      shift and go to state 2
+    expression                     shift and go to state 5
+
+state 43
+
+    (22) paramlist -> paramlist COMMA . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 50
+
+
+state 44
+
+    (19) statement -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET . program RSQRBRACKET
+    (18) expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET . RSQRBRACKET
+    (12) program -> . program statement NEWLINE
+    (13) program -> . program statement
+    (14) program -> . statement NEWLINE
+    (15) program -> . statement
+    (16) program -> . program NEWLINE
+    (17) program -> . NEWLINE
+    (10) statement -> . IDENTIFIER EQUALS expression
+    (11) statement -> . expression
+    (19) statement -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (26) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
+    (1) expression -> . LPARENTH expression RPARENTH
+    (2) expression -> . expression PLUS expression
+    (3) expression -> . expression MINUS expression
+    (4) expression -> . MINUS expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . NUMBER
+    (8) expression -> . STRING
+    (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+
+    RSQRBRACKET     shift and go to state 52
+    NEWLINE         shift and go to state 3
+    IDENTIFIER      shift and go to state 4
+    LSQRBRACKET     shift and go to state 6
+    PRINTLN         shift and go to state 7
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+
+    program                        shift and go to state 51
+    statement                      shift and go to state 2
+    expression                     shift and go to state 5
+
+state 45
+
+    (26) statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .
+
+    NEWLINE         reduce using rule 26 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
+    IDENTIFIER      reduce using rule 26 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
+    LSQRBRACKET     reduce using rule 26 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
+    PRINTLN         reduce using rule 26 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
+    LPARENTH        reduce using rule 26 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
+    MINUS           reduce using rule 26 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
+    NUMBER          reduce using rule 26 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
+    STRING          reduce using rule 26 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
+    $end            reduce using rule 26 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
+    RSQRBRACKET     reduce using rule 26 (statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET .)
+
+
+state 46
+
+    (27) arglist -> arglist COMMA . expression
+    (1) expression -> . LPARENTH expression RPARENTH
+    (2) expression -> . expression PLUS expression
+    (3) expression -> . expression MINUS expression
+    (4) expression -> . MINUS expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . NUMBER
+    (8) expression -> . STRING
+    (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+    IDENTIFIER      shift and go to state 24
+    LSQRBRACKET     shift and go to state 25
+
+    expression                     shift and go to state 53
+
+state 47
+
+    (18) expression -> LSQRBRACKET LSQRBRACKET program . RSQRBRACKET RSQRBRACKET
+    (12) program -> program . statement NEWLINE
+    (13) program -> program . statement
+    (16) program -> program . NEWLINE
+    (10) statement -> . IDENTIFIER EQUALS expression
+    (11) statement -> . expression
+    (19) statement -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (26) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
+    (1) expression -> . LPARENTH expression RPARENTH
+    (2) expression -> . expression PLUS expression
+    (3) expression -> . expression MINUS expression
+    (4) expression -> . MINUS expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . NUMBER
+    (8) expression -> . STRING
+    (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+
+    RSQRBRACKET     shift and go to state 54
+    NEWLINE         shift and go to state 13
+    IDENTIFIER      shift and go to state 4
+    LSQRBRACKET     shift and go to state 6
+    PRINTLN         shift and go to state 7
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+
+    statement                      shift and go to state 12
+    expression                     shift and go to state 5
+
+state 48
+
+    (20) expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET . RSQRBRACKET
+    (21) expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET . program RSQRBRACKET
+    (12) program -> . program statement NEWLINE
+    (13) program -> . program statement
+    (14) program -> . statement NEWLINE
+    (15) program -> . statement
+    (16) program -> . program NEWLINE
+    (17) program -> . NEWLINE
+    (10) statement -> . IDENTIFIER EQUALS expression
+    (11) statement -> . expression
+    (19) statement -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (26) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
+    (1) expression -> . LPARENTH expression RPARENTH
+    (2) expression -> . expression PLUS expression
+    (3) expression -> . expression MINUS expression
+    (4) expression -> . MINUS expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . NUMBER
+    (8) expression -> . STRING
+    (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+
+    RSQRBRACKET     shift and go to state 56
+    NEWLINE         shift and go to state 3
+    IDENTIFIER      shift and go to state 4
+    LSQRBRACKET     shift and go to state 6
+    PRINTLN         shift and go to state 7
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+
+    program                        shift and go to state 55
+    statement                      shift and go to state 2
+    expression                     shift and go to state 5
+
+state 49
+
+    (24) expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program . RSQRBRACKET RSQRBRACKET
+    (25) expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program . RSQRBRACKET program RSQRBRACKET
+    (12) program -> program . statement NEWLINE
+    (13) program -> program . statement
+    (16) program -> program . NEWLINE
+    (10) statement -> . IDENTIFIER EQUALS expression
+    (11) statement -> . expression
+    (19) statement -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (26) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
+    (1) expression -> . LPARENTH expression RPARENTH
+    (2) expression -> . expression PLUS expression
+    (3) expression -> . expression MINUS expression
+    (4) expression -> . MINUS expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . NUMBER
+    (8) expression -> . STRING
+    (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+
+    RSQRBRACKET     shift and go to state 57
+    NEWLINE         shift and go to state 13
+    IDENTIFIER      shift and go to state 4
+    LSQRBRACKET     shift and go to state 6
+    PRINTLN         shift and go to state 7
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+
+    statement                      shift and go to state 12
+    expression                     shift and go to state 5
+
+state 50
+
+    (22) paramlist -> paramlist COMMA IDENTIFIER .
+
+    LSQRBRACKET     reduce using rule 22 (paramlist -> paramlist COMMA IDENTIFIER .)
+    COMMA           reduce using rule 22 (paramlist -> paramlist COMMA IDENTIFIER .)
+
+
+state 51
+
+    (19) statement -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET program . RSQRBRACKET
+    (12) program -> program . statement NEWLINE
+    (13) program -> program . statement
+    (16) program -> program . NEWLINE
+    (10) statement -> . IDENTIFIER EQUALS expression
+    (11) statement -> . expression
+    (19) statement -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (26) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
+    (1) expression -> . LPARENTH expression RPARENTH
+    (2) expression -> . expression PLUS expression
+    (3) expression -> . expression MINUS expression
+    (4) expression -> . MINUS expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . NUMBER
+    (8) expression -> . STRING
+    (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+
+    RSQRBRACKET     shift and go to state 58
+    NEWLINE         shift and go to state 13
+    IDENTIFIER      shift and go to state 4
+    LSQRBRACKET     shift and go to state 6
+    PRINTLN         shift and go to state 7
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+
+    statement                      shift and go to state 12
+    expression                     shift and go to state 5
+
+state 52
+
+    (18) expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .
+
+    PLUS            reduce using rule 18 (expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    MINUS           reduce using rule 18 (expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    TIMES           reduce using rule 18 (expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    DIVIDE          reduce using rule 18 (expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    NEWLINE         reduce using rule 18 (expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    IDENTIFIER      reduce using rule 18 (expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    LSQRBRACKET     reduce using rule 18 (expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    PRINTLN         reduce using rule 18 (expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    LPARENTH        reduce using rule 18 (expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    NUMBER          reduce using rule 18 (expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    STRING          reduce using rule 18 (expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    $end            reduce using rule 18 (expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    RPARENTH        reduce using rule 18 (expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    RSQRBRACKET     reduce using rule 18 (expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    COMMA           reduce using rule 18 (expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+
+
+state 53
+
+    (27) arglist -> arglist COMMA expression .
     (2) expression -> expression . PLUS expression
     (3) expression -> expression . MINUS expression
     (5) expression -> expression . TIMES expression
     (6) expression -> expression . DIVIDE expression
 
-    RSQRBRACKET     reduce using rule 18 (arglist -> arglist COMMA expression .)
-    COMMA           reduce using rule 18 (arglist -> arglist COMMA expression .)
-    PLUS            shift and go to state 14
-    MINUS           shift and go to state 15
-    TIMES           shift and go to state 16
-    DIVIDE          shift and go to state 17
+    RSQRBRACKET     reduce using rule 27 (arglist -> arglist COMMA expression .)
+    COMMA           reduce using rule 27 (arglist -> arglist COMMA expression .)
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
 
 
-state 38
+state 54
 
-    (16) statement -> LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement . RSQRBRACKET
+    (18) expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET . RSQRBRACKET
 
-    RSQRBRACKET     shift and go to state 39
+    RSQRBRACKET     shift and go to state 52
 
 
-state 39
+state 55
 
-    (16) statement -> LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET .
+    (21) expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program . RSQRBRACKET
+    (12) program -> program . statement NEWLINE
+    (13) program -> program . statement
+    (16) program -> program . NEWLINE
+    (10) statement -> . IDENTIFIER EQUALS expression
+    (11) statement -> . expression
+    (19) statement -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (26) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
+    (1) expression -> . LPARENTH expression RPARENTH
+    (2) expression -> . expression PLUS expression
+    (3) expression -> . expression MINUS expression
+    (4) expression -> . MINUS expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . NUMBER
+    (8) expression -> . STRING
+    (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
 
-    NEWLINE         reduce using rule 16 (statement -> LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET .)
-    IDENTIFIER      reduce using rule 16 (statement -> LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET .)
-    LSQRBRACKET     reduce using rule 16 (statement -> LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET .)
-    PRINTLN         reduce using rule 16 (statement -> LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET .)
-    LPARENTH        reduce using rule 16 (statement -> LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET .)
-    MINUS           reduce using rule 16 (statement -> LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET .)
-    NUMBER          reduce using rule 16 (statement -> LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET .)
-    STRING          reduce using rule 16 (statement -> LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET .)
-    $end            reduce using rule 16 (statement -> LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET .)
-    RSQRBRACKET     reduce using rule 16 (statement -> LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET .)
+    RSQRBRACKET     shift and go to state 59
+    NEWLINE         shift and go to state 13
+    IDENTIFIER      shift and go to state 4
+    LSQRBRACKET     shift and go to state 6
+    PRINTLN         shift and go to state 7
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+
+    statement                      shift and go to state 12
+    expression                     shift and go to state 5
+
+state 56
+
+    (20) expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .
+
+    PLUS            reduce using rule 20 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    MINUS           reduce using rule 20 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    TIMES           reduce using rule 20 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    DIVIDE          reduce using rule 20 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    NEWLINE         reduce using rule 20 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    IDENTIFIER      reduce using rule 20 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    LSQRBRACKET     reduce using rule 20 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    PRINTLN         reduce using rule 20 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    LPARENTH        reduce using rule 20 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    NUMBER          reduce using rule 20 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    STRING          reduce using rule 20 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    $end            reduce using rule 20 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    RPARENTH        reduce using rule 20 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    RSQRBRACKET     reduce using rule 20 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    COMMA           reduce using rule 20 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+
+
+state 57
+
+    (24) expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET . RSQRBRACKET
+    (25) expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET . program RSQRBRACKET
+    (12) program -> . program statement NEWLINE
+    (13) program -> . program statement
+    (14) program -> . statement NEWLINE
+    (15) program -> . statement
+    (16) program -> . program NEWLINE
+    (17) program -> . NEWLINE
+    (10) statement -> . IDENTIFIER EQUALS expression
+    (11) statement -> . expression
+    (19) statement -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (26) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
+    (1) expression -> . LPARENTH expression RPARENTH
+    (2) expression -> . expression PLUS expression
+    (3) expression -> . expression MINUS expression
+    (4) expression -> . MINUS expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . NUMBER
+    (8) expression -> . STRING
+    (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+
+    RSQRBRACKET     shift and go to state 61
+    NEWLINE         shift and go to state 3
+    IDENTIFIER      shift and go to state 4
+    LSQRBRACKET     shift and go to state 6
+    PRINTLN         shift and go to state 7
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+
+    program                        shift and go to state 60
+    statement                      shift and go to state 2
+    expression                     shift and go to state 5
+
+state 58
+
+    (19) statement -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .
+
+    NEWLINE         reduce using rule 19 (statement -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    IDENTIFIER      reduce using rule 19 (statement -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    LSQRBRACKET     reduce using rule 19 (statement -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    PRINTLN         reduce using rule 19 (statement -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    LPARENTH        reduce using rule 19 (statement -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    MINUS           reduce using rule 19 (statement -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    NUMBER          reduce using rule 19 (statement -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    STRING          reduce using rule 19 (statement -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    $end            reduce using rule 19 (statement -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    RSQRBRACKET     reduce using rule 19 (statement -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+
+
+state 59
+
+    (21) expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .
+
+    PLUS            reduce using rule 21 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    MINUS           reduce using rule 21 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    TIMES           reduce using rule 21 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    DIVIDE          reduce using rule 21 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    NEWLINE         reduce using rule 21 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    IDENTIFIER      reduce using rule 21 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    LSQRBRACKET     reduce using rule 21 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    PRINTLN         reduce using rule 21 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    LPARENTH        reduce using rule 21 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    NUMBER          reduce using rule 21 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    STRING          reduce using rule 21 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    $end            reduce using rule 21 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    RPARENTH        reduce using rule 21 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    RSQRBRACKET     reduce using rule 21 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    COMMA           reduce using rule 21 (expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+
+
+state 60
+
+    (25) expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program . RSQRBRACKET
+    (12) program -> program . statement NEWLINE
+    (13) program -> program . statement
+    (16) program -> program . NEWLINE
+    (10) statement -> . IDENTIFIER EQUALS expression
+    (11) statement -> . expression
+    (19) statement -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (26) statement -> . PRINTLN LSQRBRACKET arglist RSQRBRACKET
+    (1) expression -> . LPARENTH expression RPARENTH
+    (2) expression -> . expression PLUS expression
+    (3) expression -> . expression MINUS expression
+    (4) expression -> . MINUS expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . NUMBER
+    (8) expression -> . STRING
+    (9) expression -> . IDENTIFIER
+    (18) expression -> . LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (20) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (21) expression -> . IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+    (24) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET
+    (25) expression -> . IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET
+
+    RSQRBRACKET     shift and go to state 62
+    NEWLINE         shift and go to state 13
+    IDENTIFIER      shift and go to state 4
+    LSQRBRACKET     shift and go to state 6
+    PRINTLN         shift and go to state 7
+    LPARENTH        shift and go to state 8
+    MINUS           shift and go to state 9
+    NUMBER          shift and go to state 10
+    STRING          shift and go to state 11
+
+    statement                      shift and go to state 12
+    expression                     shift and go to state 5
+
+state 61
+
+    (24) expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET .
+
+    PLUS            reduce using rule 24 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    MINUS           reduce using rule 24 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    TIMES           reduce using rule 24 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    DIVIDE          reduce using rule 24 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    NEWLINE         reduce using rule 24 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    IDENTIFIER      reduce using rule 24 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    LSQRBRACKET     reduce using rule 24 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    PRINTLN         reduce using rule 24 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    LPARENTH        reduce using rule 24 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    NUMBER          reduce using rule 24 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    STRING          reduce using rule 24 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    $end            reduce using rule 24 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    RPARENTH        reduce using rule 24 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    RSQRBRACKET     reduce using rule 24 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+    COMMA           reduce using rule 24 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET .)
+
+
+state 62
+
+    (25) expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .
+
+    PLUS            reduce using rule 25 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    MINUS           reduce using rule 25 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    TIMES           reduce using rule 25 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    DIVIDE          reduce using rule 25 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    NEWLINE         reduce using rule 25 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    IDENTIFIER      reduce using rule 25 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    LSQRBRACKET     reduce using rule 25 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    PRINTLN         reduce using rule 25 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    LPARENTH        reduce using rule 25 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    NUMBER          reduce using rule 25 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    STRING          reduce using rule 25 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    $end            reduce using rule 25 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    RPARENTH        reduce using rule 25 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    RSQRBRACKET     reduce using rule 25 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
+    COMMA           reduce using rule 25 (expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for MINUS in state 4 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 24 resolved as shift
+WARNING: shift/reduce conflict for NEWLINE in state 2 resolved as shift
+WARNING: shift/reduce conflict for LSQRBRACKET in state 4 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 5 resolved as shift
+WARNING: shift/reduce conflict for NEWLINE in state 12 resolved as shift
+WARNING: shift/reduce conflict for LSQRBRACKET in state 24 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 28 resolved as shift

@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'programleftPLUSMINUSleftTIMESDIVIDErightUMINUSCOMMA DIVIDE EQUALS IDENTIFIER LPARENTH LSQRBRACKET MINUS NEWLINE NUMBER PLUS PRINTLN RPARENTH RSQRBRACKET STRING TIMESexpression : LPARENTH expression RPARENTHexpression : expression PLUS expressionexpression : expression MINUS expressionexpression : MINUS expression %prec UMINUSexpression : expression TIMES expressionexpression : expression DIVIDE expressionexpression : NUMBERexpression : STRINGexpression : IDENTIFIERstatement : IDENTIFIER EQUALS expressionstatement : expressionprogram : program statement NEWLINEprogram : program statementprogram : statement NEWLINEprogram : statementstatement : LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKETstatement : PRINTLN LSQRBRACKET arglist RSQRBRACKETarglist : arglist COMMA expressionarglist : expression'
+_lr_signature = 'programleftPLUSMINUSleftTIMESDIVIDErightUMINUSCOMMA DIVIDE EQUALS IDENTIFIER LPARENTH LSQRBRACKET MINUS NEWLINE NUMBER PLUS PRINTLN RPARENTH RSQRBRACKET STRING TIMESexpression : LPARENTH expression RPARENTHexpression : expression PLUS expressionexpression : expression MINUS expressionexpression : MINUS expression %prec UMINUSexpression : expression TIMES expressionexpression : expression DIVIDE expressionexpression : NUMBERexpression : STRINGexpression : IDENTIFIERstatement : IDENTIFIER EQUALS expressionstatement : expressionprogram : program statement NEWLINEprogram : program statementprogram : statement NEWLINEprogram : statementprogram : program NEWLINEprogram : NEWLINEexpression : LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKETstatement : LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKETexpression : IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKETexpression : IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKETparamlist : paramlist COMMA IDENTIFIERparamlist : IDENTIFIERexpression : IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKETexpression : IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKETstatement : PRINTLN LSQRBRACKET arglist RSQRBRACKETarglist : arglist COMMA expressionarglist : expression'
     
-_lr_action_items = {'IDENTIFIER':([0,1,2,3,4,7,8,9,10,11,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27,28,32,34,35,36,39,],[3,3,-15,-9,-11,21,21,-7,-8,-13,-14,21,21,21,21,21,3,21,-9,-4,-12,-10,-2,-3,-5,-6,-1,-17,21,3,-16,]),'LSQRBRACKET':([0,1,2,3,4,5,6,9,10,11,12,18,21,22,23,24,25,26,27,28,32,34,36,39,],[5,5,-15,-9,-11,18,19,-7,-8,-13,-14,5,-9,-4,-12,-10,-2,-3,-5,-6,-1,-17,5,-16,]),'PRINTLN':([0,1,2,3,4,9,10,11,12,18,21,22,23,24,25,26,27,28,32,34,36,39,],[6,6,-15,-9,-11,-7,-8,-13,-14,6,-9,-4,-12,-10,-2,-3,-5,-6,-1,-17,6,-16,]),'LPARENTH':([0,1,2,3,4,7,8,9,10,11,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27,28,32,34,35,36,39,],[7,7,-15,-9,-11,7,7,-7,-8,-13,-14,7,7,7,7,7,7,7,-9,-4,-12,-10,-2,-3,-5,-6,-1,-17,7,7,-16,]),'MINUS':([0,1,2,3,4,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,31,32,34,35,36,37,39,],[8,8,-15,-9,15,8,8,-7,-8,-13,-14,8,8,8,8,8,8,8,15,-9,-4,-12,15,-2,-3,-5,-6,15,-1,-17,8,8,15,-16,]),'NUMBER':([0,1,2,3,4,7,8,9,10,11,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27,28,32,34,35,36,39,],[9,9,-15,-9,-11,9,9,-7,-8,-13,-14,9,9,9,9,9,9,9,-9,-4,-12,-10,-2,-3,-5,-6,-1,-17,9,9,-16,]),'STRING':([0,1,2,3,4,7,8,9,10,11,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27,28,32,34,35,36,39,],[10,10,-15,-9,-11,10,10,-7,-8,-13,-14,10,10,10,10,10,10,10,-9,-4,-12,-10,-2,-3,-5,-6,-1,-17,10,10,-16,]),'$end':([1,2,3,4,9,10,11,12,21,22,23,24,25,26,27,28,32,34,39,],[0,-15,-9,-11,-7,-8,-13,-14,-9,-4,-12,-10,-2,-3,-5,-6,-1,-17,-16,]),'NEWLINE':([2,3,4,9,10,11,21,22,24,25,26,27,28,32,33,34,39,],[12,-9,-11,-7,-8,23,-9,-4,-10,-2,-3,-5,-6,-1,36,-17,-16,]),'EQUALS':([3,],[13,]),'PLUS':([3,4,9,10,20,21,22,24,25,26,27,28,31,32,37,],[-9,14,-7,-8,14,-9,-4,14,-2,-3,-5,-6,14,-1,14,]),'TIMES':([3,4,9,10,20,21,22,24,25,26,27,28,31,32,37,],[-9,16,-7,-8,16,-9,-4,16,16,16,-5,-6,16,-1,16,]),'DIVIDE':([3,4,9,10,20,21,22,24,25,26,27,28,31,32,37,],[-9,17,-7,-8,17,-9,-4,17,17,17,-5,-6,17,-1,17,]),'RSQRBRACKET':([3,4,9,10,21,22,24,25,26,27,28,29,30,31,32,34,37,38,39,],[-9,-11,-7,-8,-9,-4,-10,-2,-3,-5,-6,33,34,-19,-1,-17,-18,39,-16,]),'RPARENTH':([9,10,20,21,22,25,26,27,28,32,],[-7,-8,32,-9,-4,-2,-3,-5,-6,-1,]),'COMMA':([9,10,21,22,25,26,27,28,30,31,32,37,],[-7,-8,-9,-4,-2,-3,-5,-6,35,-19,-1,-18,]),}
+_lr_action_items = {'NEWLINE':([0,1,2,3,4,5,10,11,12,13,14,21,24,26,27,28,30,32,33,34,35,36,39,40,41,42,44,45,47,48,49,51,52,55,56,57,58,59,60,61,62,],[3,13,14,-17,-9,-11,-7,-8,27,-16,-14,3,-9,-4,-12,-10,3,-2,-3,-5,-6,13,-1,3,13,3,3,-26,13,3,13,13,-18,13,-20,3,-19,-21,13,-24,-25,]),'IDENTIFIER':([0,1,2,3,4,5,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,24,26,27,28,30,32,33,34,35,36,39,40,41,42,43,44,45,46,47,48,49,51,52,55,56,57,58,59,60,61,62,],[4,4,-15,-17,-9,-11,24,24,-7,-8,-13,-16,-14,24,29,24,24,24,24,4,24,-9,-4,-12,-10,4,-2,-3,-5,-6,4,-1,4,4,4,50,4,-26,24,4,4,4,4,-18,4,-20,4,-19,-21,4,-24,-25,]),'LSQRBRACKET':([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,24,25,26,27,28,29,30,31,32,33,34,35,36,39,40,41,42,44,45,46,47,48,49,50,51,52,55,56,57,58,59,60,61,62,],[6,6,-15,-17,16,-11,21,22,25,25,-7,-8,-13,-16,-14,25,30,25,25,25,25,6,25,16,40,-4,-12,-10,-23,6,42,-2,-3,-5,-6,6,-1,6,6,6,6,-26,25,6,6,6,-22,6,-18,6,-20,6,-19,-21,6,-24,-25,]),'PRINTLN':([0,1,2,3,4,5,10,11,12,13,14,21,24,26,27,28,30,32,33,34,35,36,39,40,41,42,44,45,47,48,49,51,52,55,56,57,58,59,60,61,62,],[7,7,-15,-17,-9,-11,-7,-8,-13,-16,-14,7,-9,-4,-12,-10,7,-2,-3,-5,-6,7,-1,7,7,7,7,-26,7,7,7,7,-18,7,-20,7,-19,-21,7,-24,-25,]),'LPARENTH':([0,1,2,3,4,5,8,9,10,11,12,13,14,15,17,18,19,20,21,22,24,26,27,28,30,32,33,34,35,36,39,40,41,42,44,45,46,47,48,49,51,52,55,56,57,58,59,60,61,62,],[8,8,-15,-17,-9,-11,8,8,-7,-8,-13,-16,-14,8,8,8,8,8,8,8,-9,-4,-12,-10,8,-2,-3,-5,-6,8,-1,8,8,8,8,-26,8,8,8,8,8,-18,8,-20,8,-19,-21,8,-24,-25,]),'MINUS':([0,1,2,3,4,5,8,9,10,11,12,13,14,15,17,18,19,20,21,22,23,24,26,27,28,30,32,33,34,35,36,38,39,40,41,42,44,45,46,47,48,49,51,52,53,55,56,57,58,59,60,61,62,],[9,9,-15,-17,-9,18,9,9,-7,-8,-13,-16,-14,9,9,9,9,9,9,9,18,-9,-4,-12,18,9,-2,-3,-5,-6,9,18,-1,9,9,9,9,-26,9,9,9,9,9,-18,18,9,-20,9,-19,-21,9,-24,-25,]),'NUMBER':([0,1,2,3,4,5,8,9,10,11,12,13,14,15,17,18,19,20,21,22,24,26,27,28,30,32,33,34,35,36,39,40,41,42,44,45,46,47,48,49,51,52,55,56,57,58,59,60,61,62,],[10,10,-15,-17,-9,-11,10,10,-7,-8,-13,-16,-14,10,10,10,10,10,10,10,-9,-4,-12,-10,10,-2,-3,-5,-6,10,-1,10,10,10,10,-26,10,10,10,10,10,-18,10,-20,10,-19,-21,10,-24,-25,]),'STRING':([0,1,2,3,4,5,8,9,10,11,12,13,14,15,17,18,19,20,21,22,24,26,27,28,30,32,33,34,35,36,39,40,41,42,44,45,46,47,48,49,51,52,55,56,57,58,59,60,61,62,],[11,11,-15,-17,-9,-11,11,11,-7,-8,-13,-16,-14,11,11,11,11,11,11,11,-9,-4,-12,-10,11,-2,-3,-5,-6,11,-1,11,11,11,11,-26,11,11,11,11,11,-18,11,-20,11,-19,-21,11,-24,-25,]),'$end':([1,2,3,4,5,10,11,12,13,14,24,26,27,28,32,33,34,35,39,45,52,56,58,59,61,62,],[0,-15,-17,-9,-11,-7,-8,-13,-16,-14,-9,-4,-12,-10,-2,-3,-5,-6,-1,-26,-18,-20,-19,-21,-24,-25,]),'RSQRBRACKET':([2,3,4,5,10,11,12,13,14,24,26,27,28,32,33,34,35,36,37,38,39,41,44,45,47,48,49,51,52,53,54,55,56,57,58,59,60,61,62,],[-15,-17,-9,-11,-7,-8,-13,-16,-14,-9,-4,-12,-10,-2,-3,-5,-6,44,45,-28,-1,48,52,-26,54,56,57,58,-18,-27,52,59,-20,61,-19,-21,62,-24,-25,]),'EQUALS':([4,],[15,]),'PLUS':([4,5,10,11,23,24,26,28,32,33,34,35,38,39,52,53,56,59,61,62,],[-9,17,-7,-8,17,-9,-4,17,-2,-3,-5,-6,17,-1,-18,17,-20,-21,-24,-25,]),'TIMES':([4,5,10,11,23,24,26,28,32,33,34,35,38,39,52,53,56,59,61,62,],[-9,19,-7,-8,19,-9,-4,19,19,19,-5,-6,19,-1,-18,19,-20,-21,-24,-25,]),'DIVIDE':([4,5,10,11,23,24,26,28,32,33,34,35,38,39,52,53,56,59,61,62,],[-9,20,-7,-8,20,-9,-4,20,20,20,-5,-6,20,-1,-18,20,-20,-21,-24,-25,]),'RPARENTH':([10,11,23,24,26,32,33,34,35,39,52,56,59,61,62,],[-7,-8,39,-9,-4,-2,-3,-5,-6,-1,-18,-20,-21,-24,-25,]),'COMMA':([10,11,24,26,29,31,32,33,34,35,37,38,39,50,52,53,56,59,61,62,],[-7,-8,-9,-4,-23,43,-2,-3,-5,-6,46,-28,-1,-22,-18,-27,-20,-21,-24,-25,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'statement':([0,1,18,36,],[2,11,29,38,]),'expression':([0,1,7,8,13,14,15,16,17,18,19,35,36,],[4,4,20,22,24,25,26,27,28,4,31,37,4,]),'arglist':([19,],[30,]),}
+_lr_goto_items = {'program':([0,21,30,40,42,44,48,57,],[1,36,41,47,49,51,55,60,]),'statement':([0,1,21,30,36,40,41,42,44,47,48,49,51,55,57,60,],[2,12,2,2,12,2,12,2,2,12,2,12,12,12,2,12,]),'expression':([0,1,8,9,15,17,18,19,20,21,22,30,36,40,41,42,44,46,47,48,49,51,55,57,60,],[5,5,23,26,28,32,33,34,35,5,38,5,5,5,5,5,5,53,5,5,5,5,5,5,5,]),'paramlist':([16,],[31,]),'arglist':([22,],[37,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,23 +27,32 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('expression -> LPARENTH expression RPARENTH','expression',3,'p_expression_group','kan_yacc.py',16),
-  ('expression -> expression PLUS expression','expression',3,'p_expression_plus','kan_yacc.py',25),
-  ('expression -> expression MINUS expression','expression',3,'p_expression_minus','kan_yacc.py',30),
-  ('expression -> MINUS expression','expression',2,'p_expression_uminus','kan_yacc.py',35),
-  ('expression -> expression TIMES expression','expression',3,'p_expression_times','kan_yacc.py',40),
-  ('expression -> expression DIVIDE expression','expression',3,'p_expression_divide','kan_yacc.py',45),
-  ('expression -> NUMBER','expression',1,'p_expression_number','kan_yacc.py',50),
-  ('expression -> STRING','expression',1,'p_expression_string','kan_yacc.py',55),
-  ('expression -> IDENTIFIER','expression',1,'p_expression_identifier','kan_yacc.py',61),
-  ('statement -> IDENTIFIER EQUALS expression','statement',3,'p_expression_assign','kan_yacc.py',66),
-  ('statement -> expression','statement',1,'p_statement_expr','kan_yacc.py',77),
-  ('program -> program statement NEWLINE','program',3,'p_program_multi','kan_yacc.py',82),
-  ('program -> program statement','program',2,'p_program_multi_eof','kan_yacc.py',87),
-  ('program -> statement NEWLINE','program',2,'p_program_single','kan_yacc.py',92),
-  ('program -> statement','program',1,'p_program_no_newline','kan_yacc.py',97),
-  ('statement -> LSQRBRACKET LSQRBRACKET statement RSQRBRACKET NEWLINE statement RSQRBRACKET','statement',7,'p_statement_try_function','kan_yacc.py',102),
-  ('statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET','statement',4,'p_statement_println','kan_yacc.py',113),
-  ('arglist -> arglist COMMA expression','arglist',3,'p_arglist_multi','kan_yacc.py',121),
-  ('arglist -> expression','arglist',1,'p_arglist_single','kan_yacc.py',126),
+  ('expression -> LPARENTH expression RPARENTH','expression',3,'p_expression_group','kan_yacc.py',34),
+  ('expression -> expression PLUS expression','expression',3,'p_expression_plus','kan_yacc.py',43),
+  ('expression -> expression MINUS expression','expression',3,'p_expression_minus','kan_yacc.py',48),
+  ('expression -> MINUS expression','expression',2,'p_expression_uminus','kan_yacc.py',53),
+  ('expression -> expression TIMES expression','expression',3,'p_expression_times','kan_yacc.py',58),
+  ('expression -> expression DIVIDE expression','expression',3,'p_expression_divide','kan_yacc.py',63),
+  ('expression -> NUMBER','expression',1,'p_expression_number','kan_yacc.py',68),
+  ('expression -> STRING','expression',1,'p_expression_string','kan_yacc.py',73),
+  ('expression -> IDENTIFIER','expression',1,'p_expression_identifier','kan_yacc.py',79),
+  ('statement -> IDENTIFIER EQUALS expression','statement',3,'p_expression_assign','kan_yacc.py',84),
+  ('statement -> expression','statement',1,'p_statement_expr','kan_yacc.py',95),
+  ('program -> program statement NEWLINE','program',3,'p_program_multi','kan_yacc.py',100),
+  ('program -> program statement','program',2,'p_program_multi_eof','kan_yacc.py',105),
+  ('program -> statement NEWLINE','program',2,'p_program_single','kan_yacc.py',110),
+  ('program -> statement','program',1,'p_program_no_newline','kan_yacc.py',115),
+  ('program -> program NEWLINE','program',2,'p_program_empty_line','kan_yacc.py',120),
+  ('program -> NEWLINE','program',1,'p_program_single_empty','kan_yacc.py',125),
+  ('expression -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET','expression',5,'p_anon_function','kan_yacc.py',130),
+  ('statement -> LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET','statement',6,'p_anon_try_function','kan_yacc.py',141),
+  ('expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET RSQRBRACKET','expression',6,'p_function_define','kan_yacc.py',155),
+  ('expression -> IDENTIFIER LSQRBRACKET LSQRBRACKET program RSQRBRACKET program RSQRBRACKET','expression',7,'p_try_function_define','kan_yacc.py',168),
+  ('paramlist -> paramlist COMMA IDENTIFIER','paramlist',3,'p_paramlist_multi','kan_yacc.py',189),
+  ('paramlist -> IDENTIFIER','paramlist',1,'p_paramlist_single','kan_yacc.py',193),
+  ('expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET RSQRBRACKET','expression',7,'p_function_define_input','kan_yacc.py',197),
+  ('expression -> IDENTIFIER LSQRBRACKET paramlist LSQRBRACKET program RSQRBRACKET program RSQRBRACKET','expression',8,'p_try_function_define_input','kan_yacc.py',212),
+  ('statement -> PRINTLN LSQRBRACKET arglist RSQRBRACKET','statement',4,'p_statement_println','kan_yacc.py',237),
+  ('arglist -> arglist COMMA expression','arglist',3,'p_arglist_multi','kan_yacc.py',245),
+  ('arglist -> expression','arglist',1,'p_arglist_single','kan_yacc.py',250),
 ]
