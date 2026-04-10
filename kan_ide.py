@@ -1,11 +1,9 @@
 
-from compare_ai import AICompare
+from ai_compare import AICompare
 from kan_semantic import analyze, format_results
+
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
-from graphviz import Digraph
-import tempfile
-import os
 
 from kan_lex import lexer
 from kan_yacc import parser
@@ -23,25 +21,6 @@ class KanGUI:
     # =========================
     # UI LAYOUT
     # =========================
-    def semantic(this):
-        c_ode = this.sec.get("1.0", tk.END)
-        errors = analyze(c_ode)
-        result = format_results(errors)
-        this.output.delete("1.0", tk.END)
-        this.output.insert(tk.END, result)
-
-    def compare_ai(this):
-        c_ode = this.sec.get("1.0", tk.END)
-        
-        compiler_output = this.output.get("1.0", tk.END).strip()
-        
-        ai_output = AICompare.analyze(c_ode)
-        
-        result = AICompare.compare(compiler_output, ai_output)
-        
-        this.output.delete("1.0", tk.END)
-        this.output.insert(tk.END, f"🤖 AI Prediction:\n{ai_output}\n\n{result}")
-
     def display(this):
         # Top Frame (Editor)
         frame1 = tk.Frame(this.root)
@@ -109,46 +88,102 @@ class KanGUI:
         try:
             ast = parser.parse(c_ode)
 
-            dot = Digraph()
-            this.iden = 0
-
+            tree_output = []
             for node in ast:
-                this.build_graph(dot, node)
+                this.print_tree(node, tree_output, 0)
 
-            temp_file = os.path.join(tempfile.gettempdir(), "kan_ast")
-            dot.render(temp_file, format="png", view=True)
+            this.output.delete("1.0", tk.END)
+            this.output.insert(tk.END, "\n".join(tree_output))
 
         except Exception as e:
             messagebox.showerror("Parse tree Error occured", str(e))
 
+    def print_tree(this, node, output, level):
+        indent = "  " * level
 
-    def build_graph(this, dot, node, parent=None):
-        current_id = str(this.iden)
-        this.iden += 1
+        # print node type
+        output.append(f"{indent}{type(node).__name__}")
 
-        label = type(node).__name__
-        dot.node(current_id, label)
-
-        if parent is not None:
-            dot.edge(parent, current_id)
-
+        # print attributes if exist
         if hasattr(node, "__dict__"):
             for key, value in node.__dict__.items():
 
                 if isinstance(value, list):
+                    output.append(f"{indent}  {key}:")
                     for item in value:
-                        this.build_graph(dot, item, current_id)
+                        this.print_tree(item, output, level + 2)
 
                 elif hasattr(value, "__dict__"):
-                    this.build_graph(dot, value, current_id)
+                    output.append(f"{indent}  {key}:")
+                    this.print_tree(value, output, level + 2)
 
                 else:
-                    leaf_id = str(this.iden)
-                    this.iden += 1
-                    dot.node(leaf_id, f"{key}: {value}")
-                    dot.edge(current_id, leaf_id)
+                    output.append(f"{indent}  {key}: {value}")
 
-   
+    def compare_ai(this):
+        code = this.sec.get("1.0", tk.END)
+
+        try:
+            # Run compiler first
+            ast = parser.parse(code)
+            results = []
+
+            for stmt in ast:
+                res = stmt()
+                if res is not None:
+                    results.append(str(res))
+
+            compiler_output = "\n".join(results)
+
+            # Ask AI
+            ai_output = AICompare.analyze(code)
+
+            # Compare
+            comparison = AICompare.compare(compiler_output, ai_output)
+
+            # Show results
+            this.output.delete("1.0", tk.END)
+            this.output.insert(
+                tk.END,
+                "=== Compiler Output ===\n"
+                + compiler_output +
+                "\n\n=== AI Output ===\n"
+                + ai_output +
+                "\n\n=== Comparison ===\n"
+                + comparison
+            )
+
+        except Exception as e:
+            messagebox.showerror("AI Compare Error", str(e))
+
+
+
+    def run_code(self):
+        code = self.code_area.get("1.0", tk.END)
+
+        # 🔍 Run semantic analysis FIRST
+        errors = analyze(code)
+
+        if errors:
+            self.output.delete("1.0", tk.END)
+            self.output.insert(tk.END, format_results(errors))
+            return
+
+        # ▶️ Only execute if no errors
+        try:
+            ast = parser.parse(code)
+
+            results = []
+            for stmt in ast:
+                res = stmt()
+                if res is not None:
+                    results.append(str(res))
+
+            self.output.delete("1.0", tk.END)
+            self.output.insert(tk.END, "\n".join(results))
+
+        except Exception as e:
+            messagebox.showerror("Runtime Error", str(e))
    
     
 # =========================
