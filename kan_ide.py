@@ -102,24 +102,21 @@ class KanGUI:
         code = this.sec.get("1.0", tk.END)
 
         try:
-            # Run compiler first
             ast = parser.parse(code)
-            results = []
+
+            captured = io.StringIO()
+            sys.stdout = captured
 
             for stmt in ast:
-                res = stmt()
-                if res is not None:
-                    results.append(str(res))
+                stmt()
 
-            compiler_output = "\n".join(results)
+            sys.stdout = sys.__stdout__
 
-            # Ask AI
+            compiler_output = captured.getvalue().strip()
+
             ai_output = AICompare.analyze(code)
-
-            # Compare
             comparison = AICompare.compare(compiler_output, ai_output)
 
-            # Show results
             this.output.delete("1.0", tk.END)
             this.output.insert(
                 tk.END,
@@ -130,8 +127,8 @@ class KanGUI:
                 "\n\n=== Comparison ===\n"
                 + comparison
             )
-
         except Exception as e:
+            sys.stdout = sys.__stdout__
             messagebox.showerror("AI Compare Error", str(e))
 
 
