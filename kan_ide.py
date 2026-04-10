@@ -1,5 +1,6 @@
 
 from compare_ai import AICompare
+from kan_semantic import analyze, format_results
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 from graphviz import Digraph
@@ -22,6 +23,13 @@ class KanGUI:
     # =========================
     # UI LAYOUT
     # =========================
+    def semantic(this):
+        c_ode = this.sec.get("1.0", tk.END)
+        errors = analyze(c_ode)
+        result = format_results(errors)
+        this.output.delete("1.0", tk.END)
+        this.output.insert(tk.END, result)
+
     def compare_ai(this):
         c_ode = this.sec.get("1.0", tk.END)
         
