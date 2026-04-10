@@ -8,6 +8,9 @@ from tkinter import ttk, filedialog, messagebox
 from kan_lex import lexer
 from kan_yacc import parser
 
+import io
+import sys
+
 
 class KanGUI:
     def __init__(this, root):
@@ -32,10 +35,9 @@ class KanGUI:
         frame2 = tk.Frame(this.root) #frames for button
         frame2.pack(pady=5)
 
-        tk.Button(frame2, text="▶ Run", command=this.Process).grid(row=0, column=0, padx=5)
-        tk.Button(frame2, text="🔍 Tokens", command=this.Token).grid(row=0, column=1, padx=5)
-        tk.Button(frame2, text="🌳 Parse Tree", command=this.pr_tree).grid(row=0, column=2, padx=5)
-        tk.Button(frame2, text="🤖 Ask AI", command=this.compare_ai).grid(row=0, column=3, padx=5)
+        tk.Button(frame2, text="Run", command=this.Process).grid(row=0, column=0, padx=5)
+        tk.Button(frame2, text="Tokens", command=this.Token).grid(row=0, column=1, padx=5)
+        tk.Button(frame2, text="Ask AI", command=this.compare_ai).grid(row=0, column=3, padx=5)
     
 
         # Output Console
@@ -45,25 +47,32 @@ class KanGUI:
     
     def Process(this):
         c_ode = this.sec.get("1.0", tk.END)
-
         try:
             ast = parser.parse(c_ode)
+
+            captured = io.StringIO()
+            sys.stdout = captured
 
             answers = []
             for stmt in ast:
                 resu = stmt()
-                if resu is not None:
+                if resu is not None and resu != "":
                     answers.append(str(resu))
 
+            sys.stdout = sys.__stdout__
+
+            printed_output = captured.getvalue()
+            joined = "\n".join(answers)
+            final = (printed_output + joined).strip()
+
             this.output.delete("1.0", tk.END)
-            this.output.insert(tk.END, "\n".join(answers))
+            this.output.insert(tk.END, final)
 
         except Exception as e:
-            messagebox.showerror("Error is at Runtime ", str(e))
+            sys.stdout = sys.__stdout__ 
+            messagebox.showerror("Error is at Runtime", str(e))
 
-    # =========================
-    # SHOW TOKENS
-    # =========================
+
     def Token(this):
         c_ode = this.sec.get("1.0", tk.END)
         lexer.input(c_ode)
@@ -78,47 +87,6 @@ class KanGUI:
 
         this.output.delete("1.0", tk.END)
         this.output.insert(tk.END, "\n".join(tokens_output))
-
-    # =========================
-    # PARSE TREE (GRAPH)
-    # =========================
-    def pr_tree(this):
-        c_ode = this.sec.get("1.0", tk.END)
-
-        try:
-            ast = parser.parse(c_ode)
-
-            tree_output = []
-            for node in ast:
-                this.print_tree(node, tree_output, 0)
-
-            this.output.delete("1.0", tk.END)
-            this.output.insert(tk.END, "\n".join(tree_output))
-
-        except Exception as e:
-            messagebox.showerror("Parse tree Error occured", str(e))
-
-    def print_tree(this, node, output, level):
-        indent = "  " * level
-
-        # print node type
-        output.append(f"{indent}{type(node).__name__}")
-
-        # print attributes if exist
-        if hasattr(node, "__dict__"):
-            for key, value in node.__dict__.items():
-
-                if isinstance(value, list):
-                    output.append(f"{indent}  {key}:")
-                    for item in value:
-                        this.print_tree(item, output, level + 2)
-
-                elif hasattr(value, "__dict__"):
-                    output.append(f"{indent}  {key}:")
-                    this.print_tree(value, output, level + 2)
-
-                else:
-                    output.append(f"{indent}  {key}: {value}")
 
     def compare_ai(this):
         code = this.sec.get("1.0", tk.END)
